@@ -33,7 +33,7 @@ def load_train_data():
         vali_tags = train_tags[:3000]
         train_sentenses = train_sentenses[3000:]
         train_tags = train_tags[3000:]
-        return vali_sentenses, vali_tags, train_sentenses, train_tags
+        return train_sentenses, train_tags, vali_sentenses, vali_tags
 
 
 def load_test_data():
@@ -113,7 +113,7 @@ def format_submit(test_sentences, pred_tags):
                         j += 1
                     samples.append("_".join(sample) + '/o')
                 elif tags[i][2] == 'S':
-                    samples.append("_".join(sentense[i]) + '/' + tags[i][0])
+                    samples.append(sentense[i] + '/' + tags[i][0])
                     j = i + 1
                 else:
                     sample.append(sentense[i])

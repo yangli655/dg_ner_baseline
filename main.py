@@ -6,28 +6,31 @@ from model import Model
 from utils import *
 from metric import *
 
-LR = 0.005
-EPOCH = 15
+LR = 0.001
+EPOCH = 60
 BATCH_SIZE = 32
 EMB_SIZE = 200
 HID_SIZE = 256
 EMB_D = 0.1
-NUM_LAYERS = 4
-LSTM_D = 0.1
+NUM_LAYERS = 2
+LSTM_D = 0.5
 
 
 def train_model(model, optimizer, train_sentenses, train_tags, vali_sentenses, vali_tags, word2id, tag2id, id2tag):
     start_time = time.time()
-    scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, [3, 6, 9, 12], gamma=0.1, last_epoch=-1)
+    train_data = list(zip(train_sentenses, train_tags))
+    scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, [5, 10, 20], gamma=0.1, last_epoch=-1)
     for e in range(1, EPOCH + 1):
+        random.shuffle(train_data)
+        train_sentenses_shuffle, train_tags_shuffle = zip(*train_data)
         model.train()
         scheduler.step()
         print(scheduler.get_lr())
         total_loss = 0.
         step = 0
         for idx in range(0, len(train_sentenses), BATCH_SIZE):
-            batch_sentenses = train_sentenses[idx:idx + BATCH_SIZE]
-            batch_tags = train_tags[idx:idx + BATCH_SIZE]
+            batch_sentenses = train_sentenses_shuffle[idx:idx + BATCH_SIZE]
+            batch_tags = train_tags_shuffle[idx:idx + BATCH_SIZE]
 
             batch_sentenses, batch_tags, _ = sort_by_length(batch_sentenses, batch_tags)
 
@@ -48,7 +51,7 @@ def train_model(model, optimizer, train_sentenses, train_tags, vali_sentenses, v
                 print("Epoch {}, Loss: {:.5f}".format(e, total_loss / step))
 
         validate_model(model, vali_sentenses, vali_tags, word2id, tag2id, id2tag, e)
-        path = "model_" + str(e) + "_" + str(EMB_SIZE) + "_" + str(HID_SIZE) + ".pt"
+        path = "./model/model_" + str(e) + "_" + str(EMB_SIZE) + "_" + str(HID_SIZE) + ".pt"
         torch.save(model.state_dict(), path)
 
     end_time = time.time()
@@ -99,10 +102,11 @@ def main():
                   num_classes=len(tag2id),
                   dropout_lstm=LSTM_D,
                   tag2idx=tag2id).cuda()
+    # model.load_state_dict(torch.load("./model/model_" + str(25) + "_" + str(EMB_SIZE) + "_" + str(HID_SIZE) + ".pt"))
 
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
 
-    vali_sentenses, vali_tags, train_sentenses, train_tags = load_train_data()
+    train_sentenses, train_tags, vali_sentenses, vali_tags = load_train_data()
 
     train_model(model, optimizer, train_sentenses, train_tags, vali_sentenses, vali_tags, word2id, tag2id, id2tag)
 
@@ -110,7 +114,7 @@ def main():
 def submit():
     word2vec, tag2id, id2tag, word2id = load_dict_data(EMB_SIZE)
     weights = load_pretrained_wordvec(word2id, word2vec, EMB_SIZE)
-    path = "model_" + str(9) + "_" + str(EMB_SIZE) + "_" + str(HID_SIZE) + ".pt"
+    path = "./model/model_" + str(15) + "_" + str(EMB_SIZE) + "_" + str(HID_SIZE) + ".pt"
     device = torch.device("cuda")
     model = Model(embedding_weight=weights,
                   embedding_dim=EMB_SIZE,
@@ -167,5 +171,5 @@ if __name__ == "__main__":
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
-    main()
-    # submit()
+    # main()
+    submit()
