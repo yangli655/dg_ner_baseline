@@ -20,8 +20,10 @@ class Model(nn.Module):
 
         # Maps the output of the LSTM into tag space.
         self.relu = nn.ReLU()
-        self.linear = nn.Linear(hidden_size * 2, num_classes)
-        nn.init.xavier_uniform_(self.linear.weight)
+        self.linear1 = nn.Linear(hidden_size * 2, hidden_size)
+        self.linear2 = nn.Linear(hidden_size, num_classes)
+        nn.init.xavier_uniform_(self.linear1.weight)
+        nn.init.xavier_uniform_(self.linear2.weight)
 
         self.crf = CRF(num_tags=len(tag2idx),
                        batch_first=True)
@@ -31,8 +33,9 @@ class Model(nn.Module):
         packed = pack_padded_sequence(x, length, batch_first=True)
         output, _ = self.lstm(packed)
         output, _ = pad_packed_sequence(output, batch_first=True)
+        output = self.linear1(output)
         output = self.relu(output)
-        emissions = self.linear(output)
+        emissions = self.linear2(output)
         return emissions
 
     def forward(self, inputs, tags, length, mask):

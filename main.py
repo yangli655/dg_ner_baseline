@@ -7,19 +7,19 @@ from utils import *
 from metric import *
 
 LR = 0.001
-EPOCH = 60
+EPOCH = 10
 BATCH_SIZE = 32
-EMB_SIZE = 200
-HID_SIZE = 256
-EMB_D = 0.1
+EMB_SIZE = 300
+HID_SIZE = 384
+EMB_D = 0.25
 NUM_LAYERS = 2
-LSTM_D = 0.5
+LSTM_D = 0.25
 
 
 def train_model(model, optimizer, train_sentenses, train_tags, vali_sentenses, vali_tags, word2id, tag2id, id2tag):
     start_time = time.time()
     train_data = list(zip(train_sentenses, train_tags))
-    scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, [5, 10, 20], gamma=0.1, last_epoch=-1)
+    scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, [5, 10], gamma=0.1, last_epoch=-1)
     for e in range(1, EPOCH + 1):
         random.shuffle(train_data)
         train_sentenses_shuffle, train_tags_shuffle = zip(*train_data)
@@ -114,7 +114,7 @@ def main():
 def submit():
     word2vec, tag2id, id2tag, word2id = load_dict_data(EMB_SIZE)
     weights = load_pretrained_wordvec(word2id, word2vec, EMB_SIZE)
-    path = "./model/model_" + str(15) + "_" + str(EMB_SIZE) + "_" + str(HID_SIZE) + ".pt"
+    path = "./model/model_" + str(8) + "_" + str(EMB_SIZE) + "_" + str(HID_SIZE) + ".pt"
     device = torch.device("cuda")
     model = Model(embedding_weight=weights,
                   embedding_dim=EMB_SIZE,
