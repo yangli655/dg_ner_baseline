@@ -9,7 +9,7 @@ from metric import *
 LR = 0.001
 EPOCH = 15
 BATCH_SIZE = 32
-EMB_SIZE = 300
+EMB_SIZE = 400
 HID_SIZE = 512
 EMB_D = 0.25
 NUM_LAYERS = 2
@@ -119,7 +119,7 @@ def main():
 def submit():
     tag2id, id2tag, word2id = load_dict_data()
     weights = load_pretrained_wordvec(word2id, EMB_SIZE)
-    path = "./output/model_" + str(15) + "_" + str(EMB_SIZE) + "_" + str(HID_SIZE) + ".pt"
+    path = "./output/model_" + str(12) + "_" + str(EMB_SIZE) + "_" + str(HID_SIZE) + ".pt"
     device = torch.device("cuda")
     model = Model(embedding_weight=weights,
                   embedding_dim=EMB_SIZE,

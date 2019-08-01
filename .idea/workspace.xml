@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ea23bc2c-e192-4426-9cbc-dd4e9f8f9316" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wordvec.py" beforeDir="false" afterPath="$PROJECT_DIR$/wordvec.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -66,7 +63,8 @@
       <workItem from="1564106980322" duration="34794000" />
       <workItem from="1564463024955" duration="5455000" />
       <workItem from="1564639268895" duration="2073000" />
-      <workItem from="1564644245140" duration="1855000" />
+      <workItem from="1564644245140" duration="3025000" />
+      <workItem from="1564673644352" duration="159000" />
     </task>
     <servers />
   </component>
