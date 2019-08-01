@@ -5,7 +5,7 @@
       <paths name="ly@10.15.53.106:22">
         <serverdata>
           <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/home/ly/dg_ner_baseline" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

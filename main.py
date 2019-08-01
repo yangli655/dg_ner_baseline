@@ -2,16 +2,15 @@ import torch
 import time
 import random
 from torch.nn.utils import clip_grad_norm_
-from gensim.models import Word2Vec
 from model import Model
 from utils import *
 from metric import *
 
 LR = 0.001
-EPOCH = 10
+EPOCH = 15
 BATCH_SIZE = 32
 EMB_SIZE = 300
-HID_SIZE = 384
+HID_SIZE = 512
 EMB_D = 0.25
 NUM_LAYERS = 2
 LSTM_D = 0.25
@@ -120,7 +119,7 @@ def main():
 def submit():
     tag2id, id2tag, word2id = load_dict_data()
     weights = load_pretrained_wordvec(word2id, EMB_SIZE)
-    path = "./output/model_" + str(10) + "_" + str(EMB_SIZE) + "_" + str(HID_SIZE) + ".pt"
+    path = "./output/model_" + str(15) + "_" + str(EMB_SIZE) + "_" + str(HID_SIZE) + ".pt"
     device = torch.device("cuda")
     model = Model(embedding_weight=weights,
                   embedding_dim=EMB_SIZE,
@@ -173,7 +172,7 @@ if __name__ == "__main__":
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
-    torch.cuda.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
     # main()
     submit()

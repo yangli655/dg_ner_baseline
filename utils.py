@@ -42,16 +42,13 @@ def load_pretrained_wordvec(word2id, emb_size):
     word2vec = Word2Vec.load(word2vec_file)
 
     # glove_corpus_file = "./wordvec/corpus_" + str(emb_size) + ".model"
-    glove_file = "./wordvec/glove_" + str(emb_size) + ".model"
-    glove = Glove.load(glove_file)
+    # glove_file = "./wordvec/glove_" + str(emb_size) + ".model"
+    # glove = Glove.load(glove_file)
 
     weights = np.zeros([len(word2id), emb_size], dtype=np.float32)
     for word in word2id.keys():
-        if word in word2vec.wv.vocab and word in glove.dictionary:
-            # weights[word2id[word]] = glove.word_vectors[glove.dictionary[word]]
+        if word in word2vec.wv.vocab:
             weights[word2id[word]] = word2vec[word]
-            # weights[word2id[word]] = np.concatenate((word2vec[word], glove.word_vectors[glove.dictionary[word]]),
-            #                                         axis=0)
         else:
             weights[word2id[word]] = np.random.uniform(-0.25, 0.25)
     weights = torch.from_numpy(weights)
